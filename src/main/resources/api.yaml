@@ -32,6 +32,24 @@ paths:
             $ref: '#/definitions/Notifications'
 
   /favorite/{imdbId}:
+    get:
+      summary: get favorite of a star wars episode
+      operationId: getFavoriteEpisode
+      parameters:
+        - name: imdbId
+          in: path
+          description: movie id in imdb
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            type: boolean
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Notifications'
     post:
       summary: Add a favorite star wars episode
       operationId: addFavoriteEpisode
@@ -46,6 +64,8 @@ paths:
           description: OK
         400:
           description: Bad Request
+          schema:
+            $ref: '#/definitions/Notifications'
     delete:
       summary: Remove a favorite star wars episode
       operationId: removeFavoriteEpisode
@@ -60,6 +80,24 @@ paths:
           description: OK
         400:
           description: Bad Request
+          schema:
+            $ref: '#/definitions/Notifications'
+
+  /favorite/all:
+    get:
+      summary: Get all favorite star wars episodes
+      operationId: getFavoriteEpisodeAll
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              type: string
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Notifications'
 
 definitions:
     EpisodeDetails:
@@ -69,12 +107,14 @@ definitions:
           type: string
         title:
           type: string
+        released:
+          type: string
         directors:
           type: string
         actors:
            type: string
-        favorite:
-          type: boolean
+        plot:
+          type: string
     Notifications:
       type: object
       properties:

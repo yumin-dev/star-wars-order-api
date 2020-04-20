@@ -24,7 +24,8 @@ public class WatchOrderImplementation implements WatchOrderApi {
         details.setTitle("Star Wars: Episode VII - The Force Awakens");
         details.setDirectors("J.J. Abrams");
         details.setActors("Harrison Ford, Mark Hamill, Carrie Fisher, Adam Driver");
-        details.setFavorite(true);
+        details.setReleased("18 Dec 2015");
+        details.setPlot("Three decades after the Empire's defeat, a new threat arises in the militant First Order. Defected stormtrooper Finn and the scavenger Rey are caught up in the Resistance's search for the missing Luke Skywalker.");
         response.add(details);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

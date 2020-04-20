@@ -1,0 +1,70 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.6.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'org.hidetake.swagger.generator' version '2.18.2'
+    id 'java'
+}
+
+group = 'com.rm'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+ext {
+    springFoxArtifacts = ["springfox-swagger2", "springfox-swagger-ui"]
+    springFoxVersion = "2.6.0"
+    swaggerCodeGenVersion = "2.2.1"
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    springFoxArtifacts.each {
+        artifact -> compile("io.springfox:$artifact:$springFoxVersion")
+    }
+    swaggerCodegen("io.swagger:swagger-codegen-cli:$swaggerCodeGenVersion")
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.h2database:h2'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+generateSwaggerCode {
+    configFile = file('src/main/resources/config/swagger-config.json')
+    components = ['models', 'apis']
+    inputFile = file('src/main/resources/api.yaml')
+    outputDir = file("src/generated/swagger/")
+    language = 'spring'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs "${generateSwaggerCode.outputDir}/src/main/java/"
+        }
+    }
+}
+
+compileJava{
+    dependsOn(generateSwaggerCode)
+    source "${generateSwaggerCode.outputDir}/src/main/java/"
+}
+
+clean.doFirst {
+    delete("${generateSwaggerCode.outputDir}");
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,0 +1,5 @@
+{
+  "apiPackage": "com.rm.demo.api",
+  "modelPackage": "com.rm.demo.model",
+  "interfaceOnly": true
+}

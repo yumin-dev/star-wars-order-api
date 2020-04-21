@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.2.6.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'org.hidetake.swagger.generator' version '2.18.2'
+    id "com.github.sherter.google-java-format" version "0.8"
     id 'java'
 }
 
@@ -64,6 +65,10 @@ compileJava{
 
 clean.doFirst {
     delete("${generateSwaggerCode.outputDir}");
+}
+
+googleJavaFormat {
+    exclude 'src/generated/*'
 }
 
 test {

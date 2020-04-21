@@ -6,6 +6,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class StarWarsOrderDto {
-    String imdbId;
-    PositionDto position;
+  String imdbId;
+  PositionDto position;
 }

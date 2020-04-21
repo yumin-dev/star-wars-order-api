@@ -6,7 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class PositionDto {
-    Integer episode;
-    Integer release;
-    Integer machete;
+  Integer episode;
+  Integer release;
+  Integer machete;
 }

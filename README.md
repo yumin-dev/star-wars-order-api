@@ -21,3 +21,14 @@ These additional references should also help you:
 
 * [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
 
+### Running on Local
+* ./gradlew bootrun
+
+Debug mode:
+* ./gradlew bootrun --debug-jvm
+
+API generation:
+* ./gradlew generateSwaggerCode
+
+Google Java format
+* ./gradlew googleJavaFormat

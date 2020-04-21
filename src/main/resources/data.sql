@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS favorite (
+    id INT AUTO_INCREMENT  PRIMARY KEY,
+    imdb_id VARCHAR(250) NOT NULL,
+    ip VARCHAR(250) NOT NULL
+);
+
+CREATE HASH INDEX IF NOT EXISTS ip_address ON favorite(ip);

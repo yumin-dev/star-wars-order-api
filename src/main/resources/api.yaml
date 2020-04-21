@@ -115,6 +115,8 @@ definitions:
            type: string
         plot:
           type: string
+        coverUrl:
+          type: string
     Notifications:
       type: object
       properties:

@@ -1,7 +1,6 @@
 package com.rm.demo.controller;
 
 import com.rm.demo.api.FavoriteApi;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,9 +24,9 @@ public class FavoriteImplementation implements FavoriteApi {
   @Override
   @Transactional
   public ResponseEntity<Void> addFavoriteEpisode(String imdbId) {
-    String ip = request.getRemoteAddr();
+    String ip = convertLocalhostIp(request.getRemoteAddr());
     List<Favorite> favorites = favoriteRepositories.findByImdbIdAndIp(imdbId, ip);
-    if(favorites.size()==0) {
+    if(favorites.isEmpty()) {
       favoriteRepositories.save(new Favorite(imdbId, ip));
     }
     return new ResponseEntity<>(HttpStatus.OK);
@@ -36,28 +35,32 @@ public class FavoriteImplementation implements FavoriteApi {
   @Override
   @Transactional(readOnly = true)
   public ResponseEntity<Boolean> getFavoriteEpisode(String imdbId) {
-    String ip = request.getRemoteAddr();
+    String ip = convertLocalhostIp(request.getRemoteAddr());
     List<Favorite> favorites = favoriteRepositories.findByIp(ip);
-    favorites.stream().filter(favorite -> favorite.getImdbId()==imdbId).collect(Collectors.toList());
-    return new ResponseEntity<>(favorites.stream().filter(favorite -> favorite.getImdbId()==imdbId).collect(Collectors.toList()).size()>0, HttpStatus.OK);
+    return new ResponseEntity<>(favorites.stream().noneMatch(favorite -> favorite.getImdbId().equals(imdbId)), HttpStatus.OK);
   }
 
   @Override
   @Transactional(readOnly = true)
   public ResponseEntity<List<String>> getFavoriteEpisodeAll() {
-    String ip = request.getRemoteAddr();
+    String ip = convertLocalhostIp(request.getRemoteAddr());
     List<Favorite> favorites = favoriteRepositories.findByIp(ip);
-    return new ResponseEntity<>(favorites.stream().map(favorite -> favorite.getImdbId()).collect(Collectors.toList()), HttpStatus.OK);
+    return new ResponseEntity<>(favorites.stream().map(Favorite::getImdbId).collect(Collectors.toList()), HttpStatus.OK);
   }
 
   @Override
   @Transactional
   public ResponseEntity<Void> removeFavoriteEpisode(String imdbId) {
-    String ip = request.getRemoteAddr();
+    String ip = convertLocalhostIp(request.getRemoteAddr());
     List<Favorite> favorites = favoriteRepositories.findByImdbIdAndIp(imdbId, ip);
-    if (favorites.size()>0){
+    if (!favorites.isEmpty()){
       favoriteRepositories.deleteAll(favorites);
     }
     return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  private static String convertLocalhostIp(String originIp){
+    if ("0:0:0:0:0:0:0:1".equals(originIp)) return "127.0.0.1";
+    return originIp;
   }
 }

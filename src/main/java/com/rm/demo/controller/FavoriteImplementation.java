@@ -26,7 +26,7 @@ public class FavoriteImplementation implements FavoriteApi {
   @Transactional
   public ResponseEntity<Void> addFavoriteEpisode(String imdbId) {
     String ip = request.getRemoteAddr();
-    List<Favorite> favorites = favoriteRepositories.findByIp(ip);
+    List<Favorite> favorites = favoriteRepositories.findByImdbIdAndIp(imdbId, ip);
     if(favorites.size()==0) {
       favoriteRepositories.save(new Favorite(imdbId, ip));
     }

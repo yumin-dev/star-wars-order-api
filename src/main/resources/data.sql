@@ -5,3 +5,13 @@ CREATE TABLE IF NOT EXISTS favorite (
 );
 
 CREATE HASH INDEX IF NOT EXISTS ip_address ON favorite(ip);
+
+CREATE TABLE IF NOT EXISTS history (
+    id INT AUTO_INCREMENT  PRIMARY KEY,
+    endpoint VARCHAR(250) NOT NULL,
+    query VARCHAR(250),
+    time TIMESTAMP WITH TIME ZONE NOT NULL,
+    ip VARCHAR(250) NOT NULL
+);
+
+CREATE HASH INDEX IF NOT EXISTS ip_address ON history(ip);

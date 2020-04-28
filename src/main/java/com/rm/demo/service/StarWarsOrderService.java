@@ -2,6 +2,8 @@ package com.rm.demo.service;
 
 import com.rm.demo.model.EpisodeDetails;
 import com.rm.demo.model.StarWarsOrderDto;
+
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,47 +23,52 @@ public class StarWarsOrderService {
   @Autowired private OmdbService omdbService;
 
   public List<EpisodeDetails> getSortedStarWarEpisodes(String sort) {
-    List<EpisodeDetails> result = null;
-    ResponseEntity<List<StarWarsOrderDto>> serviceResponse =
-        restTemplateBuilder
-            .build()
-            .exchange(
-                ENDPOINT_API,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<StarWarsOrderDto>>() {});
+    List<StarWarsOrderDto> sortedStoryList = Collections.EMPTY_LIST;
+    try {
+      ResponseEntity<List<StarWarsOrderDto>> serviceResponse =
+              restTemplateBuilder
+                      .build()
+                      .exchange(
+                              ENDPOINT_API,
+                              HttpMethod.GET,
+                              null,
+                              new ParameterizedTypeReference<List<StarWarsOrderDto>>() {
+                              });
 
-    SortType sortType = SortType.getSortType(sort);
-    List<StarWarsOrderDto> sortedStoryList = null;
-    switch (sortType) {
-      case MACHETE:
-        sortedStoryList =
-            serviceResponse
-                .getBody()
-                .stream()
-                .filter(story -> story.getPosition().getMachete() != null)
-                .sorted(Comparator.comparingInt(s -> s.getPosition().getMachete()))
-                .collect(Collectors.toList());
-        break;
-      case RELEASE:
-        sortedStoryList =
-            serviceResponse
-                .getBody()
-                .stream()
-                .filter(story -> story.getPosition().getRelease() != null)
-                .sorted(Comparator.comparingInt(s -> s.getPosition().getRelease()))
-                .collect(Collectors.toList());
-        break;
-      default:
-        sortedStoryList =
-            serviceResponse
-                .getBody()
-                .stream()
-                .filter(story -> story.getPosition().getEpisode() != null)
-                .sorted(Comparator.comparingInt(s -> s.getPosition().getEpisode()))
-                .collect(Collectors.toList());
+      SortType sortType = SortType.getSortType(sort);
+      switch (sortType) {
+        case MACHETE:
+          sortedStoryList =
+                  serviceResponse
+                          .getBody()
+                          .stream()
+                          .filter(story -> story.getPosition().getMachete() != null)
+                          .sorted(Comparator.comparingInt(s -> s.getPosition().getMachete()))
+                          .collect(Collectors.toList());
+          break;
+        case RELEASE:
+          sortedStoryList =
+                  serviceResponse
+                          .getBody()
+                          .stream()
+                          .filter(story -> story.getPosition().getRelease() != null)
+                          .sorted(Comparator.comparingInt(s -> s.getPosition().getRelease()))
+                          .collect(Collectors.toList());
+          break;
+        default:
+          sortedStoryList =
+                  serviceResponse
+                          .getBody()
+                          .stream()
+                          .filter(story -> story.getPosition().getEpisode() != null)
+                          .sorted(Comparator.comparingInt(s -> s.getPosition().getEpisode()))
+                          .collect(Collectors.toList());
+      }
+    } catch (Throwable e) {
+      System.out.println("====> Error occurred while retrieving Star Wars episodes.");
+      System .out.println(e.getMessage());
+      System .out.println(e.getStackTrace());
     }
-
     return sortedStoryList
         .stream()
         .map(story -> omdbService.getEpisodeDetails(story.getImdbId()))

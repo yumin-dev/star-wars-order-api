@@ -1,0 +1,82 @@
+{
+  "info": {
+    "name": "Star Wars Order API",
+    "description": "Postman collection generated from api.yaml",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Get Watch Order",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.example.com/v1/star-wars/watch-order?sort={{sort}}",
+          "protocol": "https",
+          "host": ["api.example.com"],
+          "path": ["v1", "star-wars", "watch-order"],
+          "query": [
+            {
+              "key": "sort",
+              "value": "",
+              "description": "Sorting episodes order by"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Favorite Episode",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.example.com/v1/star-wars/favorite/:imdbId",
+          "protocol": "https",
+          "host": ["api.example.com"],
+          "path": ["v1", "star-wars", "favorite", ":imdbId"]
+        }
+      }
+    },
+    {
+      "name": "Add Favorite Episode",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "https://api.example.com/v1/star-wars/favorite/:imdbId",
+          "protocol": "https",
+          "host": ["api.example.com"],
+          "path": ["v1", "star-wars", "favorite", ":imdbId"]
+        }
+      }
+    },
+    {
+      "name": "Remove Favorite Episode",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "https://api.example.com/v1/star-wars/favorite/:imdbId",
+          "protocol": "https",
+          "host": ["api.example.com"],
+          "path": ["v1", "star-wars", "favorite", ":imdbId"]
+        }
+      }
+    },
+    {
+      "name": "Get All Favorite Episodes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.example.com/v1/star-wars/favorite/all",
+          "protocol": "https",
+          "host": ["api.example.com"],
+          "path": ["v1", "star-wars", "favorite", "all"]
+        }
+      }
+    }
+  ]
+}

@@ -3,12 +3,11 @@ package com.rm.demo.controller;
 import com.rm.demo.api.WatchOrderApi;
 import com.rm.demo.model.EpisodeDetails;
 import com.rm.demo.service.StarWarsOrderService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-
-import java.util.List;
 
 @Controller
 public class WatchOrderImplementation implements WatchOrderApi {

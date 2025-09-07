@@ -72,11 +72,11 @@ public class FavoriteImplementation implements FavoriteApi {
   }
 
   private static String convertLocalhostIp(String originIp) {
-    String destinationUri = Optional.ofNullable(originIp)
+    String processedIp = Optional.ofNullable(originIp)
     .filter(s -> !s.isEmpty())
     .map(String::toLowerCase)
     .map(FavoriteImplementation::mapperFunction)
     .orElseGet(() -> DEFAULT_URI);
-    return destinationUri;
+    return processedIp;
   }
 }

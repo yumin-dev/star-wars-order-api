@@ -3,9 +3,14 @@ package com.rm.demo.controller;
 import com.rm.demo.api.FavoriteApi;
 import com.rm.demo.dao.Favorite;
 import com.rm.demo.dao.FavoriteRepositories;
+
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class FavoriteImplementation implements FavoriteApi {
   @Autowired private FavoriteRepositories favoriteRepositories;
   @Autowired private HttpServletRequest request;
+
+  private static final String DEFAULT_URI = "127.0.0.1";
+
+  private static String mapperFunction(String uri) {
+    // Example: map IPv6 localhost to IPv4 localhost
+    if ("0:0:0:0:0:0:0:1".equals(uri)) return "127.0.0.1";
+    return uri;
+  }
 
   @Override
   @Transactional
@@ -59,7 +72,11 @@ public class FavoriteImplementation implements FavoriteApi {
   }
 
   private static String convertLocalhostIp(String originIp) {
-    if ("0:0:0:0:0:0:0:1".equals(originIp)) return "127.0.0.1";
-    return originIp;
+    String processedIp = Optional.ofNullable(originIp)
+    .filter(StringUtils::isNotBlank)
+    .map(String::toLowerCase)
+    .map(FavoriteImplementation::mapperFunction)
+    .orElseGet(() -> DEFAULT_URI);
+    return processedIp;
   }
 }

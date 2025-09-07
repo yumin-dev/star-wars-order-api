@@ -27,4 +27,8 @@ public class Favorite {
     this.imdbId = imdbId;
     this.ip = ip;
   }
+
+  public String getImdbId() {
+    return imdbId;
+  }
 }
